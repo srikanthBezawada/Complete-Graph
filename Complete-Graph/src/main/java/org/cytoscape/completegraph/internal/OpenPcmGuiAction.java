@@ -60,9 +60,6 @@ public class OpenPcmGuiAction
         CyNetworkFactory networkFactory = activator.getService(CyNetworkFactory.class);
         CyNetwork fcnetwork = networkFactory.createNetwork();
         
-        CyNetworkViewFactory networkViewFactory = activator.getService(CyNetworkViewFactory.class);
-        CyNetworkView fcnView = networkViewFactory.createNetworkView(fcnetwork);
-        
         fcnetwork.getRow(fcnetwork).set(CyNetwork.NAME, "Fully Connected Network -"+ size);
         
         for(int i=1; i<=size; i++) {
@@ -84,6 +81,9 @@ public class OpenPcmGuiAction
         
         CyNetworkManager networkManager = activator.getService(CyNetworkManager.class);
         networkManager.addNetwork(fcnetwork);
+        
+        CyNetworkViewFactory networkViewFactory = activator.getService(CyNetworkViewFactory.class);
+        CyNetworkView fcnView = networkViewFactory.createNetworkView(fcnetwork);
         
         updateView(fcnView);
     }
