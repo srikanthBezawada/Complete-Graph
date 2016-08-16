@@ -26,7 +26,7 @@ public class CytoscapeAppActivator extends AbstractCyActivator {
     public void start(BundleContext context) throws Exception {
         this.context = context;
         CyApplicationManager cyApplicationManager = getService(context, CyApplicationManager.class);
-        OpenPcmGuiAction oplaction = new OpenPcmGuiAction(this, cyApplicationManager);
+        CompleteGraphAction oplaction = new CompleteGraphAction(this, cyApplicationManager);
         registerAllServices(context, oplaction, new Properties());
     }
     

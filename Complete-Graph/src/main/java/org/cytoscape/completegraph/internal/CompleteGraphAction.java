@@ -1,6 +1,8 @@
 package org.cytoscape.completegraph.internal;
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 import org.cytoscape.app.CyAppAdapter;
 
@@ -25,13 +27,13 @@ import org.cytoscape.work.TaskIterator;
  *  This class creates the network and registers with Network Manager
  */
 
-public class OpenPcmGuiAction
+public class CompleteGraphAction
     extends AbstractCyAction
 {
     private CytoscapeAppActivator activator;
     private CyApplicationManager applicationManager;
     
-    public OpenPcmGuiAction(CytoscapeAppActivator activator, CyApplicationManager applicationManager)
+    public CompleteGraphAction(CytoscapeAppActivator activator, CyApplicationManager applicationManager)
     {
         super(APPNAME , applicationManager, null, null);
         setPreferredMenu("File.New.Network");
@@ -62,13 +64,15 @@ public class OpenPcmGuiAction
         
         fcnetwork.getRow(fcnetwork).set(CyNetwork.NAME, "Fully Connected Network -"+ size);
         
+        List<CyNode> nodeList = new ArrayList<CyNode>();
         for(int i=1; i<=size; i++) {
             CyNode node = fcnetwork.addNode();
             fcnetwork.getRow(node).set(CyNetwork.NAME, "Node "+ i);
+            nodeList.add(node);
         }
         
-        for(CyNode n1 : fcnetwork.getNodeList()) {
-            for(CyNode n2 : fcnetwork.getNodeList()) {
+        for(CyNode n1 : nodeList) {
+            for(CyNode n2 : nodeList) {
                 if(n1.equals(n2))
                     continue;
                 
