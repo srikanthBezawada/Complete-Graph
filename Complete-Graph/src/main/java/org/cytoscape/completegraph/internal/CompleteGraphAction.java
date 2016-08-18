@@ -14,6 +14,8 @@ import org.cytoscape.model.CyNetworkManager;
 import org.cytoscape.model.CyNode;
 
 import static org.cytoscape.completegraph.internal.CytoscapeAppActivator.APPNAME;
+import org.cytoscape.event.CyEventHelper;
+import org.cytoscape.model.CyEdge;
 import org.cytoscape.view.layout.CyLayoutAlgorithm;
 import org.cytoscape.view.layout.CyLayoutAlgorithmManager;
 import org.cytoscape.view.model.CyNetworkView;
@@ -70,7 +72,7 @@ public class CompleteGraphAction
             fcnetwork.getRow(node).set(CyNetwork.NAME, "Node "+ i);
             nodeList.add(node);
         }
-        
+        String interaction = "interaction type";
         for(CyNode n1 : nodeList) {
             for(CyNode n2 : nodeList) {
                 if(n1.equals(n2))
@@ -78,8 +80,9 @@ public class CompleteGraphAction
                 
                 if(fcnetwork.containsEdge(n1, n2) || fcnetwork.containsEdge(n2, n1))
                     continue;
-                
-                fcnetwork.addEdge(n1, n2, true);
+                CyEdge edge = fcnetwork.addEdge(n1, n2, true);
+                fcnetwork.getRow(edge).set(CyNetwork.NAME, fcnetwork.getRow(n1).get(CyNetwork.NAME, String.class) + " (" + interaction + ") " + fcnetwork.getRow(n2).get(CyNetwork.NAME, String.class));
+                fcnetwork.getRow(edge).set(CyEdge.INTERACTION, interaction);
             }
         }
         
@@ -90,6 +93,7 @@ public class CompleteGraphAction
         CyNetworkView fcnView = networkViewFactory.createNetworkView(fcnetwork);
         
         updateView(fcnView);
+        activator.getService(CyEventHelper.class).flushPayloadEvents();
     }
     
     public void updateView(CyNetworkView view){
